@@ -52,6 +52,10 @@ ENV FPM_PROCESS_MANAGER=ondemand \
     SYMFONY_DEBUG=0 \
     DATABASE_HOST=db
 
+COPY config/php-fpm/docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["php-fpm"]
+
 WORKDIR /app
 
 # Bring in installed PHP deps
