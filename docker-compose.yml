@@ -21,6 +21,7 @@ services:
             # PHP code
             - ./src:/app/src
             - ./app:/app/app
+            - ./web:/app/web
             - ./composer.json:/app/composer.json
             - ./composer.lock:/app/composer.lock
 

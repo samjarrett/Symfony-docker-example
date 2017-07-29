@@ -48,6 +48,8 @@ FROM samjarrett/php-toolkit
 
 ENV FPM_PROCESS_MANAGER=ondemand \
     PHP_TIMEZONE="Australia/Melbourne" \
+    SYMFONY_ENV=prod \
+    SYMFONY_DEBUG=0 \
     DATABASE_HOST=db
 
 WORKDIR /app
