@@ -1,0 +1,12 @@
+.DS_Store
+.dockerignore
+.git
+.gitignore
+.idea
+app/config/parameters.yml
+docker-compose.yml
+node_modules
+var
+vendor
+web/bundles
+README.md

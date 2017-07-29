@@ -1,0 +1,51 @@
+version: '2'
+services:
+    db:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: notasecurepassword
+            MYSQL_DATABASE: symfony
+        ports:
+            # Declare the 3306 port as something to map to the host
+            # at runtime this gets given a random port number, so to see it, you'd have to run:
+            # `docker ps` and check what port to connect to from the host machine.
+            - 3306
+
+    app:
+        build:
+            context: .
+        volumes:
+            # Override opcache config for dev
+            - ./config/php-fpm/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+
+            # PHP code
+            - ./src:/app/src
+            - ./app:/app/app
+            - ./composer.json:/app/composer.json
+            - ./composer.lock:/app/composer.lock
+
+            # Front-end code
+            - ./package.json:/app/package.json
+            - ./yarn.lock:/app/yarn.lock
+            - ./design:/app/design
+
+            # Shared to nginx container
+            - /app/web/bundles
+            - /app/web/assets
+        links:
+            - db
+        environment:
+            SYMFONY_DEBUG: "1"
+            SYMFONY_ENV: "dev"
+            DATABASE_USER: root
+            DATABASE_PASSWORD: notasecurepassword
+            DATABASE_NAME: symfony
+
+    nginx:
+        image: samjarrett/nginx-php-fpm
+        volumes_from:
+            - app
+        links:
+            - app
+        ports:
+            - 80:80
